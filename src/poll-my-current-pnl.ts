@@ -5,6 +5,7 @@ import { PublicKey } from "@solana/web3.js";
 import { BNToUSDRepresentation } from "./utils";
 import TelegramBot from 'node-telegram-bot-api';
 import * as dotenv from 'dotenv';
+import express, { Request, Response } from 'express';
 
 dotenv.config();
 
@@ -220,5 +221,24 @@ async function pollMyPnL() {
   }, POLL_INTERVAL_SECONDS * 1000);
 }
 
-// Start polling
-pollMyPnL();
+// Create Express server for Render health checks
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (_req: Request, res: Response) => {
+  res.json({
+    status: 'running',
+    service: 'jupiter-pnl-reporter',
+    uptime: process.uptime()
+  });
+});
+
+app.get('/health', (_req: Request, res: Response) => {
+  res.json({ status: 'healthy' });
+});
+
+// Start server and polling
+app.listen(PORT, () => {
+  console.log(`🌐 Server running on port ${PORT}`);
+  pollMyPnL();
+});
