@@ -9,7 +9,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 // Configuration
-const POLL_INTERVAL_SECONDS = 10; // Poll every 5 seconds (configurable)
+const POLL_INTERVAL_SECONDS = 30; // Poll every x seconds (configurable)
 const WALLET_ADDRESS = "BxmSEddwE1jBFVSXnsvDsujgjBh2GK2jhrzpZLJJidrG";
 
 // Telegram Bot Configuration
